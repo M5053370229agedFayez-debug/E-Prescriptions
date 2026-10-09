@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
     <RootNamespace>EPrescriptions.Tests</RootNamespace>
     <AssemblyName>EPrescriptions.Tests</AssemblyName>

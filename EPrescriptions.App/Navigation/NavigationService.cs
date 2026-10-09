@@ -1,15 +1,14 @@
 using System;
-using System.Windows.Controls;
 using EPrescriptions.Domain.Entities;
 
 namespace EPrescriptions.App.Navigation
 {
     public class NavigationService
     {
-        private readonly Frame _frame;
+        private readonly object _frame;
         private readonly Func<User> _currentUserAccessor;
 
-        public NavigationService(Frame frame, Func<User> currentUserAccessor)
+        public NavigationService(object frame, Func<User> currentUserAccessor)
         {
             _frame = frame;
             _currentUserAccessor = currentUserAccessor;

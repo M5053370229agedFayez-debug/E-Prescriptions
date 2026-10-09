@@ -821,7 +821,6 @@ namespace EPrescriptions.Services.Zakat
     language: 'csharp',
     description: 'خدمة التنقل مع الحارس الأمني (Guard) لحظر الوصول المباشر لشاشة سجل المالك',
     content: `using System;
-using System.Windows.Controls;
 using EPrescriptions.Domain.Entities;
 
 namespace EPrescriptions.App.Navigation
@@ -832,10 +831,10 @@ namespace EPrescriptions.App.Navigation
     /// </summary>
     public class NavigationService
     {
-        private readonly Frame _frame;
+        private readonly object _frame;
         private readonly Func<User> _currentUserAccessor;
 
-        public NavigationService(Frame frame, Func<User> currentUserAccessor)
+        public NavigationService(object frame, Func<User> currentUserAccessor)
         {
             _frame = frame;
             _currentUserAccessor = currentUserAccessor;
