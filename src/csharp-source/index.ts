@@ -1176,32 +1176,32 @@ Name: "arabic"; MessagesFile: "compiler:Languages\\Arabic.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "..\\bin\\Release\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "..\\EPrescriptions.App\\bin\\Release\\net462\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Code]
-// دالة فحص وجود .NET Framework 4.8 عبر مفتاح السجل
-function IsDotNet48Detected(): Boolean;
+// دالة فحص وجود .NET Framework 4.6.2 أو أحدث عبر مفتاح السجل
+function IsDotNetDetected(): Boolean;
 var
   installedRelease: Cardinal;
 begin
   Result := False;
   if RegQueryDWordValue(HKLM, 'SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full', 'Release', installedRelease) then
   begin
-    // Release 528040 = .NET Framework 4.8
-    if installedRelease >= 528040 then
+    // Release 393295 = .NET Framework 4.6+, 394802 = 4.6.2
+    if installedRelease >= 393295 then
       Result := True;
   end;
 end;
 
 function InitializeSetup(): Boolean;
 begin
-  if not IsDotNet48Detected() then
+  if not IsDotNetDetected() then
   begin
-    MsgBox('يتطلب البرنامج تثبيت .NET Framework 4.8 أولاً للعمل بشكل صحيح.', mbError, MB_OK);
+    MsgBox('يتطلب البرنامج تثبيت .NET Framework 4.6.2 أو أحدث للعمل بشكل صحيح.', mbError, MB_OK);
     Result := False;
   end
   else

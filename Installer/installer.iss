@@ -27,30 +27,31 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "..\EPrescriptions.App\bin\Release\net48\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\EPrescriptions.App\bin\Release\net462\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Code]
-function IsDotNet48Detected(): Boolean;
+function IsDotNetDetected(): Boolean;
 var
   installedRelease: Cardinal;
 begin
   Result := False;
   if RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', installedRelease) then
   begin
-    if installedRelease >= 528040 then
+    // Release 393295 = .NET 4.6, 394802 = .NET 4.6.2
+    if installedRelease >= 393295 then
       Result := True;
   end;
 end;
 
 function InitializeSetup(): Boolean;
 begin
-  if not IsDotNet48Detected() then
+  if not IsDotNetDetected() then
   begin
-    MsgBox('This application requires .NET Framework 4.8. Please install .NET Framework 4.8 first.', mbError, MB_OK);
+    MsgBox('This application requires .NET Framework 4.6.2 or later. Please install .NET Framework 4.6.2.', mbError, MB_OK);
     Result := False;
   end
   else

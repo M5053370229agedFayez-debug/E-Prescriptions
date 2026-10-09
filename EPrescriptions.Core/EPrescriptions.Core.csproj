@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <LangVersion>latest</LangVersion>
     <RootNamespace>EPrescriptions.Core</RootNamespace>
     <AssemblyName>EPrescriptions.Core</AssemblyName>
