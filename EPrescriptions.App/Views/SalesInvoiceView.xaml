@@ -1,0 +1,103 @@
+<UserControl x:Class="EPrescriptions.App.Views.SalesInvoiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FlowDirection="RightToLeft"
+             FontFamily="Segoe UI, Cairo">
+    <UserControl.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1e1b4b" Offset="0.0"/>
+            <GradientStop Color="#312e81" Offset="0.5"/>
+            <GradientStop Color="#4338ca" Offset="1.0"/>
+        </LinearGradientBrush>
+    </UserControl.Background>
+
+    <Grid Margin="20">
+        <Border Background="#FFFFFF" CornerRadius="16" Padding="20">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="4" Opacity="0.25"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="10" Margin="0,0,0,16" Padding="16">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#1e1b4b" Offset="0.0"/>
+                            <GradientStop Color="#3730a3" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="نقطة البيع - فاتورة مبيعات جديدة" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                            <Border Background="#4f46e5" CornerRadius="6" Padding="8,2" Margin="16,0,0,0">
+                                <TextBlock Text="{Binding InvoiceNumber}" Foreground="White" FontWeight="SemiBold"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding FormattedDate}" Foreground="#D1D5DB" Margin="0,0,16,0"/>
+                            <TextBlock Text="{Binding CurrentUserName}" Foreground="#93C5FD" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1" Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="TxtBarcodeSearch" Grid.Column="0" Margin="0,0,12,0" Height="42" FontSize="15"
+                             Padding="10,8" Tag="امسح الباركود أو اكتب اسم الدواء (F3)..."/>
+                    <ComboBox Grid.Column="1" Margin="0,0,12,0" Height="42" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}"/>
+                    <ComboBox Grid.Column="2" Height="42" ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPaymentMethod}"/>
+                </Grid>
+
+                <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding InvoiceItems}"
+                          CanUserAddRows="False" EnableRowVirtualization="True" BorderBrush="#E5E7EB" BorderThickness="1">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="كود الصنف" Binding="{Binding DrugCode}" Width="100"/>
+                        <DataGridTextColumn Header="اسم الصنف" Binding="{Binding DrugName}" Width="2*"/>
+                        <DataGridComboBoxColumn Header="الوحدة" Width="100"/>
+                        <DataGridTextColumn Header="الكمية" Binding="{Binding Quantity}" Width="80"/>
+                        <DataGridTextColumn Header="سعر الوحدة" Binding="{Binding UnitPrice, StringFormat={}{0:F2}}" Width="90"/>
+                        <DataGridTextColumn Header="خصم %" Binding="{Binding DiscountPercent}" Width="80"/>
+                        <DataGridTextColumn Header="الرصيد" Binding="{Binding AvailableStock}" Width="80"/>
+                        <DataGridTextColumn Header="الصلاحية" Binding="{Binding ExpiryDate, StringFormat={}{0:yyyy-MM}}" Width="100"/>
+                        <DataGridTextColumn Header="الإجمالي (ج.م)" Binding="{Binding Total, StringFormat={}{0:F2}}" Width="110"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Row="3" Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="حفظ وطباعة (F10)" Background="#10B981" Foreground="White" Height="44" Padding="16,0" Margin="0,0,10,0"/>
+                        <Button Content="فاتورة جديدة (F2)" Background="#3B82F6" Foreground="White" Height="44" Padding="16,0" Margin="0,0,10,0"/>
+                        <Button Content="مرتجع (F4)" Background="#EF4444" Foreground="White" Height="44" Padding="16,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" Background="#EEF2FF" BorderBrush="#6366F1" BorderThickness="2" CornerRadius="10" Padding="20,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="صافي المستحق: " FontSize="18" FontWeight="Bold" Foreground="#312E81" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding NetPayable, StringFormat='{}{0:F2}'}" FontSize="24" FontWeight="ExtraBold" Foreground="#4338CA" VerticalAlignment="Center"/>
+                            <TextBlock Text=" ج.م" FontSize="18" FontWeight="Bold" Foreground="#4338CA" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

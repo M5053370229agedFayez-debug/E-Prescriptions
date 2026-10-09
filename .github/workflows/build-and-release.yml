@@ -1,0 +1,62 @@
+name: Build & Release e_prescriptions Windows App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build .NET 4.8, Run Tests & Create Installer
+    runs-on: windows-latest
+
+    steps:
+    - name: 1. Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: 2. Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: 3. Setup NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: 4. Restore NuGet Packages
+      run: nuget restore EPrescriptions.sln
+
+    - name: 5. Build Solution (Release)
+      run: msbuild EPrescriptions.sln /p:Configuration=Release /p:Platform="Any CPU" -verbosity:minimal
+
+    - name: 6. Run xUnit Automated Tests
+      run: dotnet test EPrescriptions.Tests/EPrescriptions.Tests.csproj --configuration Release --verbosity normal
+
+    - name: 7. Install Inno Setup
+      run: choco install innosetup -y --no-progress
+
+    - name: 8. Compile Inno Setup Installer (.exe)
+      shell: pwsh
+      run: |
+        $iscc = (Get-Command ISCC.exe -ErrorAction SilentlyContinue)?.Source
+        if (-not $iscc) {
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+        }
+        if (-not (Test-Path $iscc)) {
+          $iscc = "C:\Program Files\Inno Setup 6\ISCC.exe"
+        }
+        Write-Host "Using Inno Setup compiler at: $iscc"
+        & $iscc Installer\installer.iss
+
+    - name: 9. Upload Setup Installer Artifact (.exe)
+      uses: actions/upload-artifact@v4
+      with:
+        name: EPrescriptions-Windows-Setup-Installer
+        path: Installer/Output/*.exe
+        if-no-files-found: warn
+
+    - name: 10. Upload Application Binaries (Portable Zip)
+      uses: actions/upload-artifact@v4
+      with:
+        name: EPrescriptions-Binaries-Release
+        path: EPrescriptions.App/bin/Release/net48/
+        if-no-files-found: warn

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>EPrescriptions.Tests</RootNamespace>
+    <AssemblyName>EPrescriptions.Tests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EPrescriptions.Core\EPrescriptions.Core.csproj" />
+    <ProjectReference Include="..\EPrescriptions.Domain\EPrescriptions.Domain.csproj" />
+    <ProjectReference Include="..\EPrescriptions.Data\EPrescriptions.Data.csproj" />
+    <ProjectReference Include="..\EPrescriptions.App\EPrescriptions.App.csproj" />
+  </ItemGroup>
+</Project>

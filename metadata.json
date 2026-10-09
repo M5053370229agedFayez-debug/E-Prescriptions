@@ -1,0 +1,8 @@
+{
+  "name": "e_prescriptions - نظام إدارة الصيدليات المتكامل",
+  "description": "نظام إدارة صيدليات متكامل لسطح المكتب يعمل بدون إنترنت مع واجهة عربية كاملة، نقاط بيع سريعة، إدارة مخزون FEFO، دور المالك الخفي، وسجل تدقيق متطور للسوق المصري",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
